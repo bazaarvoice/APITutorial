@@ -1,0 +1,112 @@
+/* http://nicolasgallagher.com/pure-css-speech-bubbles/ */
+.triangle-border {
+  position:relative;
+  padding:15px;
+  margin:.5em 0 1em;
+  border:5px solid #06f;
+  color:#333;
+  background:#fff;
+  /* css3 */
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+
+/* THE TRIANGLE
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.triangle-border:before {
+  content:"";
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  left:40px; /* controls horizontal position */
+  border-width:20px 20px 0;
+  border-style:solid;
+  border-color:#06f transparent;
+  /* reduce the damage in FF3.0 */
+  display:block; 
+  width:0;
+}
+
+/* creates the smaller  triangle */
+.triangle-border:after {
+  content:"";
+  position:absolute;
+  bottom:-13px; /* value = - border-top-width - border-bottom-width */
+  left:47px; /* value = (:before left) + (:before border-left) - (:after border-left) */
+  border-width:13px 13px 0;
+  border-style:solid;
+  border-color:#fff transparent;
+  /* reduce the damage in FF3.0 */
+  display:block; 
+  width:0;
+}
+
+
+a img {
+  border: none;
+}
+
+.review {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.review_body {
+  padding: 10px;
+}
+
+.review_body p {
+  font-style:italic;
+}
+
+.review_body h3 {
+  margin-top: 1px;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+    .author {
+      margin-top: 5px;
+      font-size: 150%;
+    }
+
+    .product_name {
+        width: 70%;
+        display: inline-block;
+    }
+
+    .picture_right {
+        float: right;
+        margin-right: 5px;
+    }
+
+    /* ----------------------------
+    Support for star ratings
+    ---------------------------- */
+
+    .rating {
+        display: inline-block;
+        background: transparent url(stars.png) repeat-x scroll 0px 0px;
+        height: 30px;
+        width: 150px;
+    }
+
+    .rating .ratingHighlight {
+        display: inline-block;
+        background: transparent url(stars.png) repeat-x scroll 0px -30px;
+        height: 30px;
+    }
+    .rating span {
+        display: none;
+    }
+
+		#module {
+			width: 300px;
+			padding: 5px;
+			margin: 15px;
+			font-family: Helvetica;
+      font-size: 80%;
+		}
+

@@ -1,0 +1,104 @@
+<html> 
+  <head> 
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js"></script>
+  <link rel="stylesheet" href="recent_reviews.css" />
+
+	<!-- Configuration Section -->
+	<script type="text/javascript">
+		// API Call configuration
+		var api_server = "http://reviews.apitestcustomer.bazaarvoice.com/bvstaging/data";
+		var api_key = "kuy3zj9pr3n7i0wxajrzj04xo";
+		var num_items = 5;
+  </script>
+
+<!-- Template for displaying the module.  This is a Resig Microtemplate-style of template. -->
+<script type="text/html" id="module_template">
+  <% _.each(Results, function(Review) { %>
+    <% var ReviewAuthor = Includes.Authors[Review.AuthorId]; %>
+    <% var ReviewProduct = Includes.Products[Review.ProductId]; %>
+
+    <div class="review">
+      <div class="review_body triangle-border">
+        <span class="rating"><span class="ratingHighlight" style="width:<%=100*(Review.Rating/5)%>%"></span></span>
+        <h3> <%=Review.Title%> </h3>
+        <p class="body"> <%=truncate(Review.ReviewText, 200)%> </p>
+      </div>
+      <a href="<%=ReviewProduct.ProductPageUrl%>" target="_blank">
+        <img class="picture_right" height="60px" src="<%=ReviewProduct.ImageUrl%>" onerror="this.src='no-image-100px.gif';" />
+      </a>
+      <% var authorName = "Anonymous"; 
+      if(ReviewAuthor && ReviewAuthor.DisplayName) {
+        authorName = ReviewAuthor.DisplayName;
+      }
+      %>
+      <div class="author"> <%= authorName %> </div>
+      <% if(!ReviewProduct.ImageUrl) { ReviewProduct.ImageUrl = "no-image-100px.gif"; } %>
+      <div class="product_name">
+        Talking about <a href="<%=ReviewProduct.ProductPageUrl%>" target="_blank"><%=ReviewProduct.Name%></a>
+      </div>
+    </div>
+  <% }); %>			
+</script>
+
+<script type="text/html" id="module_simple">
+  <%  _.each(Results, function(Review) { %>
+    <div class="review">
+      <h2><%=Review.Title%></h2>
+      <h5>Rating: <%=Review.Rating%> out of 5</h5>
+      <p><%=Review.ReviewText%></p>
+    </div>
+  <% }); %>			
+</script>
+
+</head> 
+
+<body> 
+	<!-- Placeholder for widget  -->
+	<div id="module"></div>
+
+	<!-- Script Section -->
+<script type="text/javascript">
+  /*$(document).ready(function() {
+    $.ajaxSetup({ cache: true });
+    $.getJSON(api_server+"/reviews.json?callback=?", 
+      "apiversion=4.8&include=products,authors&filter=RatingsOnly:false&filter=DisplayLocale:en_US&passkey=" + api_key + "&limit=" + num_items,
+      function(json){
+        _.each(json['Results'], function(review) {
+          $("#module").append("<h1>"+review['Title']+"</h1>");
+        });
+      });
+  });*/
+
+  $(document).ready(function() {
+    // Disable cache-busting parameter names because we want to allow for API results to be cached
+    $.ajaxSetup({ cache: true });
+    // Make the call to the API using the base URL and key we set at the top of the file
+    $.getJSON(api_server+"/reviews.json?callback=?", 
+      "apiversion=4.9&include=products,authors&filter=isRatingsOnly:false&filter=DisplayLocale:en_US&passkey=" + api_key + "&limit=" + num_items,
+      function(json){
+        // Render the template into a variable
+        var output = _.template(document.getElementById("module_template").innerHTML, json);
+        $("#module").append(output);
+    });	
+  });
+
+  // Truncate a string on word boundires rather than character boundries. 
+  // Dustin Mihalik
+  (function(){
+      this.truncate = function truncate(str, length) {
+          var trunc = str;
+          if (trunc && trunc.length > length) {
+              /* Truncate the content of the P, then go back to the end of the previous word. */
+              trunc = trunc.substring(0, length);
+              trunc = trunc.replace(/\w+$/, '');
+              return trunc + "...";
+          } else {
+              return trunc;
+          }
+      };
+  })();
+</script>
+
+</body> 
+</html>
