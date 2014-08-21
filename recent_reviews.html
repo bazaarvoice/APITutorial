@@ -6,10 +6,14 @@
 
 	<!-- Configuration Section -->
 	<script type="text/javascript">
-		// API Call configuration
+		// API request configuration
 		var api_server = "http://stg.api.bazaarvoice.com/data";
+    // API key for this demonstration only.
+    // Refer to http://developer.bazaarvoice.com to request a key for your app
 		var api_key = "kuy3zj9pr3n7i0wxajrzj04xo";
 		var num_items = 5;
+    // Refer to http://developer.bazaarvoice.com to find the latest version
+    var api_version = "5.4";
   </script>
 
 <!-- Template for displaying the module.  This is a Resig Microtemplate-style of template. -->
@@ -59,23 +63,12 @@
 
 	<!-- Script Section -->
 <script type="text/javascript">
-  /*$(document).ready(function() {
-    $.ajaxSetup({ cache: true });
-    $.getJSON(api_server+"/reviews.json?callback=?", 
-      "apiversion=4.8&include=products,authors&filter=RatingsOnly:false&filter=DisplayLocale:en_US&passkey=" + api_key + "&limit=" + num_items,
-      function(json){
-        _.each(json['Results'], function(review) {
-          $("#module").append("<h1>"+review['Title']+"</h1>");
-        });
-      });
-  });*/
-
   $(document).ready(function() {
     // Disable cache-busting parameter names because we want to allow for API results to be cached
     $.ajaxSetup({ cache: true });
-    // Make the call to the API using the base URL and key we set at the top of the file
-    $.getJSON(api_server+"/reviews.json?callback=?", 
-      "apiversion=4.9&include=products,authors&filter=isRatingsOnly:false&filter=DisplayLocale:en_US&passkey=" + api_key + "&limit=" + num_items,
+    // Make the request to the API using the base URL and key we set at the top of the file
+    $.getJSON( api_server + "/reviews.json?callback=?", 
+      "apiversion=" + api_version + "&include=products,authors&filter=isRatingsOnly:false&filter=DisplayLocale:en_US&passkey=" + api_key + "&limit=" + num_items,
       function(json){
         // Render the template into a variable
         var output = _.template(document.getElementById("module_template").innerHTML, json);
